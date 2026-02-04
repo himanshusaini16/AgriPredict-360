@@ -22,7 +22,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final UserRepository userRepo;
 
     // ✅ Works for BOTH local & production
-    @Value("${app.oauth2.redirect-uri:http://localhost:5173}")
+    @Value("${app.oauth2.redirect-uri:https://agri-predict360.vercel.app/}")
     private String redirectUri;
 
     public OAuth2SuccessHandler(
