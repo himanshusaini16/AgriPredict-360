@@ -5,7 +5,6 @@ import {
   FaLeaf,
   FaBug,
   FaTrash,
-  FaPlus,
   FaCheckCircle,
   FaCapsules,
 } from "react-icons/fa";
@@ -14,7 +13,6 @@ import { cropImages } from "../assets/cropImage";
 
 const History = () => {
   const [active, setActive] = useState("crop");
-  const [visibleCount, setVisibleCount] = useState(3);
 
   const {
     cropHistory,
@@ -27,14 +25,13 @@ const History = () => {
   } = useContext(AppContext);
 
   useEffect(() => {
-    setVisibleCount(3);
     if (active === "crop") fetchCropHistory();
     if (active === "disease") fetchDiseaseHistory();
   }, [active]);
 
   return (
-    <div className="min-h-screen bg-green-50 flex">
-      {/* SIDEBAR */}
+    <div className="min-h-screen bg-green-50 flex flex-col md:flex-row">
+      {/* ================= SIDEBAR (DESKTOP) ================= */}
       <aside className="hidden md:block w-64 bg-white border-r p-6">
         <h2 className="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
           <FaHistory /> History
@@ -63,8 +60,25 @@ const History = () => {
         </button>
       </aside>
 
-      {/* CONTENT */}
+      {/* ================= CONTENT ================= */}
       <main className="flex-1 p-4 md:p-10">
+        {/* ===== MOBILE DROPDOWN ===== */}
+        <div className="md:hidden mb-6">
+          <h2 className="text-lg font-bold text-green-800 flex items-center gap-2 mb-3">
+            <FaHistory /> History
+          </h2>
+
+          <select
+            value={active}
+            onChange={(e) => setActive(e.target.value)}
+            className="w-full border rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <option value="crop">🌱 Crop Prediction</option>
+            <option value="disease">🐛 Disease Prediction</option>
+          </select>
+        </div>
+
+        {/* ================= CROP HISTORY ================= */}
         {active === "crop" && (
           <>
             <h1 className="text-xl md:text-2xl font-bold text-green-800 mb-4 flex items-center gap-2">
@@ -86,10 +100,9 @@ const History = () => {
                     key={item.id}
                     className="bg-white rounded-xl shadow-sm border p-4"
                   >
-                    {/* FULL IMAGE */}
                     <div className="bg-green-50 rounded-lg mb-3 p-2">
                       <img
-                        src={cropImages[cropKey] }
+                        src={cropImages[cropKey]}
                         alt={item.crop}
                         className="w-full h-48 object-contain rounded-lg"
                       />
@@ -130,6 +143,7 @@ const History = () => {
           </>
         )}
 
+        {/* ================= DISEASE HISTORY ================= */}
         {active === "disease" && (
           <>
             <h1 className="text-xl md:text-2xl font-bold text-green-800 mb-4 flex items-center gap-2">
