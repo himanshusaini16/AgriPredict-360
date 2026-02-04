@@ -1,4 +1,11 @@
 import { useState } from "react";
+import {
+  FaStore,
+  FaSeedling,
+  FaCapsules,
+  FaShoppingCart,
+  FaRupeeSign,
+} from "react-icons/fa";
 
 const seedsData = [
   {
@@ -49,15 +56,16 @@ const Store = () => {
   return (
     <div className="min-h-[80vh] bg-gray-50 flex">
 
-      {/* Sidebar (Clean & Light) */}
+      {/* Sidebar */}
       <aside className="w-64 bg-white border-r p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">
-          🏪 Store
+        <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <FaStore />
+          Store
         </h2>
 
         <button
           onClick={() => setActive("seeds")}
-          className={`w-full text-left px-4 py-3 rounded-lg mb-2 font-medium transition
+          className={`w-full flex items-center gap-2 text-left px-4 py-3 rounded-lg mb-2 font-medium transition
             ${
               active === "seeds"
                 ? "bg-green-50 text-green-700 border-l-4 border-green-600"
@@ -65,12 +73,13 @@ const Store = () => {
             }
           `}
         >
-          🌱 Seeds
+          <FaSeedling />
+          Seeds
         </button>
 
         <button
           onClick={() => setActive("medicine")}
-          className={`w-full text-left px-4 py-3 rounded-lg font-medium transition
+          className={`w-full flex items-center gap-2 text-left px-4 py-3 rounded-lg font-medium transition
             ${
               active === "medicine"
                 ? "bg-green-50 text-green-700 border-l-4 border-green-600"
@@ -78,13 +87,15 @@ const Store = () => {
             }
           `}
         >
-          💊 Medicines
+          <FaCapsules />
+          Medicines
         </button>
       </aside>
 
       {/* Content Area */}
       <main className="flex-1 p-10">
-        <h1 className="text-2xl font-bold text-gray-800 mb-8">
+        <h1 className="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-2">
+          {active === "seeds" ? <FaSeedling /> : <FaCapsules />}
           {active === "seeds" ? "Available Seeds" : "Available Medicines"}
         </h1>
 
@@ -103,11 +114,13 @@ const Store = () => {
               </p>
 
               <div className="flex justify-between items-center">
-                <span className="font-semibold text-green-700">
-                  {item.price}
+                <span className="font-semibold text-green-700 flex items-center gap-1">
+                  <FaRupeeSign />
+                  {item.price.replace("₹", "")}
                 </span>
 
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition">
+                <button className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition flex items-center gap-2">
+                  <FaShoppingCart />
                   Buy
                 </button>
               </div>

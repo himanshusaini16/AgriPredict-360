@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { GiWheat, GiPlantRoots } from "react-icons/gi";
+import { MdBugReport } from "react-icons/md";
 
 const Home = () => {
   return (
@@ -6,8 +8,9 @@ const Home = () => {
 
       {/* Hero / About Section */}
       <section className="w-full bg-gradient-to-b from-green-100 to-green-50 py-5 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-green-800 mb-6">
-          🌾 Smart Crop Advisor
+        <h1 className="text-4xl md:text-5xl font-extrabold text-green-800 mb-6 flex items-center justify-center gap-3">
+          <GiWheat className="text-yellow-600" />
+          Smart Crop Advisor
         </h1>
 
         <p className="text-gray-700 max-w-3xl mx-auto text-lg md:text-xl leading-relaxed">
@@ -24,7 +27,9 @@ const Home = () => {
 
             {/* Predict Crop Card */}
             <div className="bg-white rounded-2xl shadow-lg p-10 text-center hover:shadow-xl transition transform hover:-translate-y-1">
-              <div className="text-5xl mb-4">🌱</div>
+              <div className="text-5xl mb-4 flex justify-center">
+                <GiPlantRoots className="text-green-700" />
+              </div>
 
               <h2 className="text-2xl font-bold text-green-700 mb-4">
                 Predict Best Crop
@@ -45,7 +50,9 @@ const Home = () => {
 
             {/* Predict Disease Card */}
             <div className="bg-white rounded-2xl shadow-lg p-10 text-center hover:shadow-xl transition transform hover:-translate-y-1">
-              <div className="text-5xl mb-4">🦠</div>
+              <div className="text-5xl mb-4 flex justify-center">
+                <MdBugReport className="text-red-600" />
+              </div>
 
               <h2 className="text-2xl font-bold text-green-700 mb-4">
                 Predict Crop Disease

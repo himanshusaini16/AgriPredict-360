@@ -21,14 +21,11 @@ const AppContextProvider = ({ children }) => {
   const auth = JSON.parse(localStorage.getItem("token"));
   const token = auth?.token;
   const userId = auth?.id;
-
-  console.log("userid from appconetxt",userId)
-
   
   const getProfile = async () => {
     try {
       if (!token || !userId) {
-        console.log("❌ No auth found");
+        // console.log("❌ No auth found");
         setLoading(false);
         return;
       }
@@ -59,14 +56,14 @@ const AppContextProvider = ({ children }) => {
   await axios.delete(
     `${backendUrl}/api/crop/delete-crop/${predictionId}`
   );
-  fetchCropHistory(); // refresh
+  fetchCropHistory();
 };
 
 const deleteDiseasePrediction = async (predictionId) => {
   await axios.delete(
     `${backendUrl}/api/crop/disease/${predictionId}`
   );
-  fetchDiseaseHistory(); // refresh
+  fetchDiseaseHistory();
 };
 
 

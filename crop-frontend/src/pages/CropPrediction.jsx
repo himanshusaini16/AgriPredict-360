@@ -1,6 +1,15 @@
 import { useContext, useState } from "react";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
+import {
+  FaSeedling,
+  FaCloudSunRain,
+  FaFlask,
+  FaMagic,
+  FaRobot,
+  FaComments,
+  FaSpinner,
+} from "react-icons/fa";
 
 const CropPrediction = () => {
   const [form, setForm] = useState({
@@ -18,41 +27,58 @@ const CropPrediction = () => {
 
   const [loading, setLoading] = useState(false);
   const [chatbotLoading, setChatbotLoading] = useState(false);
+  const [soilLoading, setSoilLoading] = useState(false);
+  const [weatherLoading, setWeatherLoading] = useState(false);
+
   const [error, setError] = useState("");
-  const {userId,backendUrl} = useContext(AppContext)
 
+  const { userId,backendUrl } = useContext(AppContext);
 
-  console.log("user id from crop ",userId)
-
-  // 🌱 Random Soil Test
+  /* 🌱 Soil Test with 5s loading */
   const generateSoilTest = () => {
-    setForm((prev) => ({
-      ...prev,
-      nitrogen: Math.floor(Math.random() * 50) + 50,
-      phosphorus: Math.floor(Math.random() * 40) + 20,
-      potassium: Math.floor(Math.random() * 40) + 20,
-      ph: (Math.random() * 2 + 5.5).toFixed(1),
-    }));
+    if (soilLoading) return;
+
+    setSoilLoading(true);
+
+    setTimeout(() => {
+      setForm((prev) => ({
+        ...prev,
+        nitrogen: Math.floor(Math.random() * 50) + 50,
+        phosphorus: Math.floor(Math.random() * 40) + 20,
+        potassium: Math.floor(Math.random() * 40) + 20,
+        ph: (Math.random() * 2 + 5.5).toFixed(1),
+      }));
+
+      setSoilLoading(false);
+    }, 5000);
   };
 
-  // 🌦 Random Weather
+  /* 🌦 Weather Test with 5s loading */
   const generateWeather = () => {
-    setForm((prev) => ({
-      ...prev,
-      temperature: (Math.random() * 22 + 18).toFixed(1),
-      humidity: Math.floor(Math.random() * 55) + 40,
-      rainfall: Math.floor(Math.random() * 300),
-    }));
+    if (weatherLoading) return;
+
+    setWeatherLoading(true);
+
+    setTimeout(() => {
+      setForm((prev) => ({
+        ...prev,
+        temperature: (Math.random() * 22 + 18).toFixed(1),
+        humidity: Math.floor(Math.random() * 55) + 40,
+        rainfall: Math.floor(Math.random() * 300),
+      }));
+
+      setWeatherLoading(false);
+    }, 5000);
   };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔮 ML Model Prediction (REAL)
+  /* 🔮 ML Model */
   const predictFromModel = async () => {
     const payload = {
-      userId: userId,
+      userId,
       n: Number(form.nitrogen),
       p: Number(form.phosphorus),
       k: Number(form.potassium),
@@ -62,31 +88,22 @@ const CropPrediction = () => {
       rainfall: Number(form.rainfall),
     };
 
-    const response = await axios.post(
-      "http://localhost:8080/api/crop/predict",
+    const res = await axios.post(
+      `${backendUrl}/api/crop/predict`,
       payload
     );
 
-    return response.data;
+    return res.data;
   };
 
-  // 💬 Chatbot Prediction (DUMMY)
+  /* 💬 Chatbot (Dummy) */
   const predictFromChatbot = () => {
     setChatbotLoading(true);
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        const dummyCrops = [
-          "Rice",
-          "Wheat",
-          "Maize",
-          "Cotton",
-          "Sugarcane",
-          "Barley",
-        ];
-
-        const crop =
-          dummyCrops[Math.floor(Math.random() * dummyCrops.length)];
+        const crops = ["Rice", "Wheat", "Maize", "Cotton", "Sugarcane"];
+        const crop = crops[Math.floor(Math.random() * crops.length)];
 
         resolve({
           label: crop,
@@ -98,7 +115,7 @@ const CropPrediction = () => {
     });
   };
 
-  // 🚀 Predict Both
+  /* 🚀 Predict */
   const predictCrop = async () => {
     setLoading(true);
     setError("");
@@ -111,7 +128,7 @@ const CropPrediction = () => {
 
       const chatbot = await predictFromChatbot();
       setChatbotResult(chatbot);
-    } catch (err) {
+    } catch {
       setError("Prediction failed. Please try again.");
     } finally {
       setLoading(false);
@@ -122,27 +139,62 @@ const CropPrediction = () => {
     <div className="min-h-screen bg-green-50 py-16 px-4">
       <div className="max-w-7xl mx-auto">
 
-        {/* Title */}
-        <h1 className="text-4xl font-extrabold text-green-800 text-center mb-12">
-          🌾 Crop Recommendation System
+        {/* Header */}
+        <h1 className="text-4xl font-extrabold text-green-800 text-center mb-12 flex items-center justify-center gap-3">
+          <FaSeedling />
+          Crop Recommendation System
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
           {/* LEFT */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
-            <div className="flex gap-4 mb-6">
+
+            <div className="flex gap-4 mb-8">
+              {/* Soil Test */}
               <button
                 onClick={generateSoilTest}
-                className="flex-1 bg-green-700 text-white py-2 rounded-lg font-semibold"
+                disabled={soilLoading}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold ${
+                  soilLoading
+                    ? "bg-gray-300 text-gray-600"
+                    : "bg-green-700 text-white hover:bg-green-800"
+                }`}
               >
-                🌱 Soil Test
+                {soilLoading ? (
+                  <>
+                    <FaSpinner className="animate-spin" />
+                    Testing Soil...
+                  </>
+                ) : (
+                  <>
+                    <FaFlask />
+                    Soil Test
+                  </>
+                )}
               </button>
+
+              {/* Weather */}
               <button
                 onClick={generateWeather}
-                className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-semibold"
+                disabled={weatherLoading}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg font-semibold ${
+                  weatherLoading
+                    ? "bg-gray-300 text-gray-600"
+                    : "bg-blue-600 text-white hover:bg-blue-700"
+                }`}
               >
-                🌦 Weather
+                {weatherLoading ? (
+                  <>
+                    <FaSpinner className="animate-spin" />
+                    Fetching Weather...
+                  </>
+                ) : (
+                  <>
+                    <FaCloudSunRain />
+                    Weather
+                  </>
+                )}
               </button>
             </div>
 
@@ -169,7 +221,7 @@ const CropPrediction = () => {
                     name={key}
                     value={form[key]}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border rounded-lg"
+                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
                   />
                 </div>
               ))}
@@ -178,13 +230,14 @@ const CropPrediction = () => {
             <button
               onClick={predictCrop}
               disabled={loading}
-              className={`w-full mt-8 py-4 rounded-xl text-lg font-bold ${
+              className={`w-full mt-8 py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-3 ${
                 loading
                   ? "bg-gray-400"
                   : "bg-green-700 text-white hover:bg-green-800"
               }`}
             >
-              {loading ? "Predicting..." : "🔮 Predict Best Crop"}
+              <FaMagic />
+              {loading ? "Predicting..." : "Predict Best Crop"}
             </button>
 
             {error && (
@@ -193,22 +246,22 @@ const CropPrediction = () => {
           </div>
 
           {/* RIGHT */}
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+          <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
 
-            <h2 className="text-xl font-bold text-green-800 mb-6 text-center">
+            <h2 className="text-xl font-bold text-green-800 mb-6">
               Prediction Results
             </h2>
 
             {!modelResult && !chatbotResult && (
-              <p className="text-center text-gray-500">
+              <p className="text-gray-500">
                 Submit inputs to get predictions 🌱
               </p>
             )}
 
             {modelResult && (
-              <div className="mb-6 text-center">
-                <p className="text-sm text-gray-500">
-                  🤖 ML Model
+              <div className="mb-8">
+                <p className="text-sm text-gray-500 flex items-center justify-center gap-2">
+                  <FaRobot /> ML Model
                 </p>
                 <p className="text-4xl font-extrabold text-green-700">
                   {modelResult.label}
@@ -220,15 +273,15 @@ const CropPrediction = () => {
             )}
 
             {chatbotLoading && (
-              <p className="text-center text-blue-500">
-                💬 Chatbot thinking...
+              <p className="text-blue-500 flex items-center justify-center gap-2">
+                <FaComments /> Chatbot thinking...
               </p>
             )}
 
             {chatbotResult && (
-              <div className="text-center">
-                <p className="text-sm text-gray-500">
-                  💬 Chatbot Recommendation
+              <div>
+                <p className="text-sm text-gray-500 flex items-center justify-center gap-2">
+                  <FaComments /> Chatbot Recommendation
                 </p>
                 <p className="text-4xl font-extrabold text-blue-700">
                   {chatbotResult.label}

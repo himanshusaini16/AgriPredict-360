@@ -1,4 +1,13 @@
 import { Link } from "react-router-dom";
+import {
+  FaLeaf,
+  FaHome,
+  FaSeedling,
+  FaStore,
+  FaMapMarkerAlt,
+  FaEnvelope,
+} from "react-icons/fa";
+import { GiWheat } from "react-icons/gi";
 
 const Footer = () => {
   return (
@@ -7,8 +16,9 @@ const Footer = () => {
 
         {/* Brand */}
         <div className="max-w-sm">
-          <h2 className="text-lg font-extrabold  mb-2">
-            🌱 AgriPredict 360
+          <h2 className="text-lg font-extrabold mb-2 flex items-center gap-2">
+            <GiWheat className="text-yellow-400" />
+            AgriPredict 360
           </h2>
 
           <p className="text-xs leading-relaxed text-green-100/90">
@@ -24,55 +34,66 @@ const Footer = () => {
             yield.
           </p>
 
-          <p className="text-[11px] mt-3 text-green-200">
-            Built for smart & sustainable farming 🌾
+          <p className="text-[11px] mt-3 text-green-200 flex items-center gap-1">
+            <FaLeaf />
+            Built for smart & sustainable farming
           </p>
         </div>
 
         {/* Links */}
-       <div>
-  <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-green-200">
-    Quick Links
-  </h3>
+        <div>
+          <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-green-200 flex items-center gap-2">
+            <FaLeaf />
+            Quick Links
+          </h3>
 
-  <ul className="space-y-2 text-xs">
-    <li>
-      <Link
-        to="/"
-        className="hover:text-yellow-400 transition cursor-pointer"
-      >
-        Home
-      </Link>
-    </li>
+          <ul className="space-y-2 text-xs">
+            <li>
+              <Link
+                to="/"
+                className="hover:text-yellow-400 transition cursor-pointer flex items-center gap-2"
+              >
+                <FaHome />
+                Home
+              </Link>
+            </li>
 
-    <li>
-      <Link
-        to="/predict-crop"
-        className="hover:text-yellow-400 transition cursor-pointer"
-      >
-        Predict Crop
-      </Link>
-    </li>
+            <li>
+              <Link
+                to="/predict-crop"
+                className="hover:text-yellow-400 transition cursor-pointer flex items-center gap-2"
+              >
+                <FaSeedling />
+                Predict Crop
+              </Link>
+            </li>
 
-    <li>
-      <Link
-        to="/store"
-        className="hover:text-yellow-400 transition cursor-pointer"
-      >
-        Store
-      </Link>
-    </li>
-  </ul>
-</div>
-
+            <li>
+              <Link
+                to="/store"
+                className="hover:text-yellow-400 transition cursor-pointer flex items-center gap-2"
+              >
+                <FaStore />
+                Store
+              </Link>
+            </li>
+          </ul>
+        </div>
 
         {/* Contact */}
         <div>
-          <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-green-200">
+          <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-green-200 flex items-center gap-2">
+            <FaEnvelope />
             Contact
           </h3>
-          <p className="text-xs mb-1">📍 India</p>
-          <p className="text-xs">📧 support@agripredict360.com</p>
+          <p className="text-xs mb-1 flex items-center gap-2">
+            <FaMapMarkerAlt />
+            India
+          </p>
+          <p className="text-xs flex items-center gap-2">
+            <FaEnvelope />
+            support@agripredict360.com
+          </p>
         </div>
       </div>
 

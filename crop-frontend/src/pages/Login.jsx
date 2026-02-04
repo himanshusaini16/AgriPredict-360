@@ -3,6 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import axios from "axios";
 
+import {
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaSignInAlt,
+  FaUserPlus,
+  FaExclamationCircle,
+  FaExchangeAlt,
+} from "react-icons/fa";
+import { GiWheat } from "react-icons/gi";
+
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
 
@@ -13,82 +24,66 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const {backendUrl,getProfile}  = useContext(AppContext);
-  
-  console.log(backendUrl)
-
+  const { backendUrl, getProfile } = useContext(AppContext);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
+    try {
+      if (isRegister) {
+        if (!name || !email || !password) {
+          setError("All fields are required");
+          return;
+        }
 
+        const res = await axios.post(
+          backendUrl + "/api/auth/register",
+          { name, email, password }
+        );
 
-  try {
-    if (isRegister) {
-      // 📝 REGISTER
-      if (!name || !email || !password) {
-        setError("All fields are required");
-        return;
+        localStorage.setItem(
+          "token",
+          JSON.stringify({ token: res.data.token, id: res.data.id })
+        );
+
+        getProfile();
+        navigate("/");
+      } else {
+        const res = await axios.post(
+          backendUrl + "/api/auth/login",
+          { email, password }
+        );
+
+        localStorage.setItem(
+          "token",
+          JSON.stringify({ token: res.data.token, id: res.data.id })
+        );
+
+        getProfile();
+        navigate("/");
       }
-
-      const res = await axios.post(backendUrl+"/api/auth/register", {
-        name,
-        email,
-        password,
-      });
-
-      console.log(res.data)
-
-            localStorage.setItem("token", JSON.stringify({
-    token: res.data.token,
-    id: res.data.id
-  }));
-      getProfile()
-  
-
-      navigate("/");
-    } else {
-      // 🔐 LOGIN
-      const res = await axios.post(backendUrl+"/api/auth/login", {
-        email,
-        password,
-      });
-
-      
-      localStorage.setItem("token", JSON.stringify({
-    token: res.data.token,
-    id: res.data.id
-  }));
-      getProfile()
-
-      console.log("loginn data",res.data)
-
-      navigate("/");
+    } catch (err) {
+      if (err.response) {
+        const msg =
+          err.response.data?.message ||
+          err.response.data ||
+          "User not found";
+        setError(msg);
+      } else {
+        setError("Server not reachable");
+      }
     }
-  }  catch (err) {
-  if (err.response) {
-    const msg =
-      err.response.data?.message ||
-      err.response.data ||
-      "User not found";
-
-    setError(msg);
-  } else {
-    setError("Server not reachable");
-  }
-}
-
-};
-
+  };
 
   return (
     <div className="flex items-center justify-center min-h-full py-16 bg-green-50">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
 
         {/* Header */}
-        <h2 className="text-3xl font-extrabold text-green-800 text-center mb-2">
-          {isRegister ? "Create Account 🌱" : "Welcome Back 🌾"}
+        <h2 className="text-3xl font-extrabold text-green-800 text-center mb-2 flex items-center justify-center gap-2">
+          <GiWheat className="text-yellow-600" />
+          {isRegister ? "Create Account" : "Welcome Back"}
         </h2>
 
         <p className="text-gray-600 text-center mb-6">
@@ -99,7 +94,8 @@ const Login = () => {
 
         {/* Error */}
         {error && (
-          <p className="text-red-600 text-sm text-center mb-4">
+          <p className="text-red-600 text-sm text-center mb-4 flex items-center justify-center gap-2">
+            <FaExclamationCircle />
             {error}
           </p>
         )}
@@ -107,10 +103,13 @@ const Login = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
 
-          {/* Name (Register only) */}
+          {/* Name */}
           {isRegister && (
             <div>
-              <label className="block text-sm font-medium mb-1">Name</label>
+              <label className="block text-sm font-medium mb-1 flex items-center gap-2">
+                <FaUser />
+                Name
+              </label>
               <input
                 type="text"
                 value={name}
@@ -123,7 +122,10 @@ const Login = () => {
 
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm font-medium mb-1 flex items-center gap-2">
+              <FaEnvelope />
+              Email
+            </label>
             <input
               type="email"
               value={email}
@@ -136,7 +138,10 @@ const Login = () => {
 
           {/* Password */}
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="block text-sm font-medium mb-1 flex items-center gap-2">
+              <FaLock />
+              Password
+            </label>
             <input
               type="password"
               value={password}
@@ -150,8 +155,9 @@ const Login = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-green-700 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition"
+            className="w-full bg-green-700 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition flex items-center justify-center gap-2"
           >
+            {isRegister ? <FaUserPlus /> : <FaSignInAlt />}
             {isRegister ? "Register" : "Login"}
           </button>
         </form>
@@ -163,36 +169,36 @@ const Login = () => {
           <div className="flex-grow h-px bg-gray-300" />
         </div>
 
-        {/* Google (UI only for now) */}
-      <button
-  onClick={() => {
-    window.location.href =
-      `${backendUrl}/oauth2/authorization/google`;
-  }}
-  className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
->
-  <img
-    src="https://www.svgrepo.com/show/475656/google-color.svg"
-    alt="Google"
-    className="w-5 h-5"
-  />
-  <span className="font-medium">
-    {isRegister ? "Sign up with Google" : "Login with Google"}
-  </span>
-</button>
-
+        {/* Google Login */}
+        <button
+          onClick={() => {
+            window.location.href =
+              `${backendUrl}/oauth2/authorization/google`;
+          }}
+          className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
+          <span className="font-medium">
+            {isRegister ? "Sign up with Google" : "Login with Google"}
+          </span>
+        </button>
 
         {/* Toggle */}
-        <p className="text-center text-sm text-gray-600 mt-6">
-          {isRegister ? "Already have an account?" : "Don’t have an account?"}{" "}
+        <p className="text-center text-sm text-gray-600 mt-6 flex items-center justify-center gap-2">
+          {isRegister ? "Already have an account?" : "Don’t have an account?"}
           <button
             type="button"
             onClick={() => {
               setIsRegister(!isRegister);
               setError("");
             }}
-            className="text-green-700 font-semibold hover:underline"
+            className="text-green-700 font-semibold hover:underline flex items-center gap-1"
           >
+            <FaExchangeAlt />
             {isRegister ? "Login" : "Register"}
           </button>
         </p>
