@@ -12,6 +12,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
@@ -19,9 +21,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final UserRepository userRepo;
 
+    // ✅ Works for BOTH local & production
     @Value("${app.oauth2.redirect-uri:http://localhost:5173}")
     private String redirectUri;
-
 
     public OAuth2SuccessHandler(
             JwtService jwtService,
@@ -54,16 +56,17 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 });
 
         String token = jwtService.generateToken(user);
-        System.out.println("token-->"+token);
 
-        System.out.println("User Info"+ user);
+        // ✅ Encode token (important)
+        String encodedToken = URLEncoder.encode(token, StandardCharsets.UTF_8);
 
-        // Redirect back to frontend with token
-        response.sendRedirect(
-                "http://localhost:5173/oauth2/success"
-                        + "?token=" + token
-                        + "&id=" + user.getId()
-        );
+        // ✅ FINAL redirect URL
+        String finalRedirect =
+                redirectUri
+                        + "/oauth2/success"
+                        + "?token=" + encodedToken
+                        + "&id=" + user.getId();
 
+        response.sendRedirect(finalRedirect);
     }
 }
