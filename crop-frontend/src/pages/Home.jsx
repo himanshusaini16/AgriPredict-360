@@ -5,8 +5,6 @@ import { MdBugReport } from "react-icons/md";
 const Home = () => {
   return (
     <div className="bg-green-50 flex flex-col items-center">
-
-      {/* Hero / About Section */}
       <section className="w-full bg-gradient-to-b from-green-100 to-green-50 py-5 text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold text-green-800 mb-6 flex items-center justify-center gap-3">
           <GiWheat className="text-yellow-600" />
@@ -20,12 +18,9 @@ const Home = () => {
         </p>
       </section>
 
-      {/* Centered Cards Section */}
       <section className="flex flex-grow items-center justify-center w-full py-16">
         <div className="max-w-5xl w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-
-            {/* Predict Crop Card */}
             <div className="bg-white rounded-2xl shadow-lg p-10 text-center hover:shadow-xl transition transform hover:-translate-y-1">
               <div className="text-5xl mb-4 flex justify-center">
                 <GiPlantRoots className="text-green-700" />
@@ -48,7 +43,6 @@ const Home = () => {
               </Link>
             </div>
 
-            {/* Predict Disease Card */}
             <div className="bg-white rounded-2xl shadow-lg p-10 text-center hover:shadow-xl transition transform hover:-translate-y-1">
               <div className="text-5xl mb-4 flex justify-center">
                 <MdBugReport className="text-red-600" />
@@ -70,11 +64,9 @@ const Home = () => {
                 Predict Disease
               </Link>
             </div>
-
           </div>
         </div>
       </section>
-
     </div>
   );
 };

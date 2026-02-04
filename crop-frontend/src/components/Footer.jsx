@@ -13,8 +13,6 @@ const Footer = () => {
   return (
     <footer className="bg-green-800 text-green-100 text-sm">
       <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-
-        {/* Brand */}
         <div className="max-w-sm">
           <h2 className="text-lg font-extrabold mb-2 flex items-center gap-2">
             <GiWheat className="text-yellow-400" />
@@ -40,7 +38,6 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Links */}
         <div>
           <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-green-200 flex items-center gap-2">
             <FaLeaf />
@@ -80,7 +77,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Contact */}
         <div>
           <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-green-200 flex items-center gap-2">
             <FaEnvelope />
@@ -97,7 +93,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar */}
       <div className="border-t border-green-700/60 text-center py-3 text-[11px] text-green-200">
         © {new Date().getFullYear()} AgriPredict 360. All rights reserved.
       </div>

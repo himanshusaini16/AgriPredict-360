@@ -55,13 +55,11 @@ const Profile = () => {
     );
   }
 
-  // ✏️ Edit
   const handleEditClick = () => {
     setName(userData.name || "");
     setIsEditing(true);
   };
 
-  // 💾 Save name
   const handleSaveName = async () => {
     if (!name.trim()) {
       toast.warning("Name cannot be empty");
@@ -77,7 +75,7 @@ const Profile = () => {
         {
           params: { username: name },
           headers: { Authorization: `Bearer ${userData.token}` },
-        }
+        },
       );
 
       await getProfile();
@@ -92,13 +90,11 @@ const Profile = () => {
     }
   };
 
-  // 📷 Avatar click
   const handleAvatarClick = () => {
     if (!isEditing) return;
     fileInputRef.current.click();
   };
 
-  // 🖼 Upload image
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -120,7 +116,7 @@ const Profile = () => {
             Authorization: `Bearer ${userData.token}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       await getProfile();
@@ -137,7 +133,6 @@ const Profile = () => {
     }
   };
 
-  // 🚪 Logout
   const handleLogout = () => {
     localStorage.removeItem("auth");
     setUserData(null);
@@ -152,8 +147,6 @@ const Profile = () => {
   return (
     <div className="bg-green-50 min-h-[60vh] py-16 px-4">
       <div className="max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-8">
-
-        {/* HEADER */}
         <div className="text-center mb-8">
           <div
             onClick={handleAvatarClick}
@@ -208,7 +201,6 @@ const Profile = () => {
           <p className="text-gray-600 text-sm">{userData.email}</p>
         </div>
 
-        {/* INFO GRID */}
         <div className="grid grid-cols-2 gap-4 mb-8">
           <InfoCard icon={<FaUser />} label="Role" value="Farmer" />
           <InfoCard icon={<FaMapMarkerAlt />} label="Location" value="India" />
@@ -229,7 +221,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* ACTIONS */}
         <div className="space-y-4">
           {isEditing ? (
             <button

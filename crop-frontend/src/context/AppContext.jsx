@@ -16,12 +16,11 @@ const AppContextProvider = ({ children }) => {
   const [totalCropPredict, setTotalCropPredict] = useState(0);
   const [totalDiseasePredict, setTotalDiseasePredict] = useState(0);
   const [totalPrediction, setTotalPrediction] = useState(0);
-  
 
   const auth = JSON.parse(localStorage.getItem("token"));
   const token = auth?.token;
   const userId = auth?.id;
-  
+
   const getProfile = async () => {
     try {
       if (!token || !userId) {
@@ -30,96 +29,76 @@ const AppContextProvider = ({ children }) => {
         return;
       }
 
-      const { data } = await axios.get(
-        `${backendUrl}/api/users/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await axios.get(`${backendUrl}/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      console.log("✅ getProfile success:", data);
-      setUserData({ ...data, token }); // keep token in memory
+      // console.log("✅ getProfile success:", data);
+      setUserData({ ...data, token });
     } catch (error) {
       console.error(
         "❌ getProfile error:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     } finally {
       setLoading(false);
     }
   };
 
-
   const deleteCropPrediction = async (predictionId) => {
-  await axios.delete(
-    `${backendUrl}/api/crop/delete-crop/${predictionId}`
-  );
-  fetchCropHistory();
-};
+    await axios.delete(`${backendUrl}/api/crop/delete-crop/${predictionId}`);
+    fetchCropHistory();
+  };
 
-const deleteDiseasePrediction = async (predictionId) => {
-  await axios.delete(
-    `${backendUrl}/api/crop/disease/${predictionId}`
-  );
-  fetchDiseaseHistory();
-};
+  const deleteDiseasePrediction = async (predictionId) => {
+    await axios.delete(`${backendUrl}/api/crop/disease/${predictionId}`);
+    fetchDiseaseHistory();
+  };
 
+  const getDiseaseFromModel = async (imageFile) => {
+    const formData = new FormData();
 
+    formData.append("image", imageFile);
+    formData.append("userId", userId);
 
+    const response = await axios.post(
+      `${backendUrl}/api/crop/predict-disease`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
 
+    return response.data;
+  };
 
-/**
- * 🦠 Disease prediction using ML model (multipart/form-data)
- */
-const getDiseaseFromModel = async (imageFile) => {
-  const formData = new FormData();
+  const getMedicineFromChatbot = async (diseaseResult) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (!diseaseResult || diseaseResult.label === "Healthy") {
+          resolve("No medicine required. Crop is healthy 🌱");
+        } else {
+          resolve(
+            "Spray Mancozeb 75% WP twice at 7-day interval. Ensure proper irrigation.",
+          );
+        }
+      }, 1200);
+    });
+  };
 
-  formData.append("image", imageFile); // ✅ must match backend
-  formData.append(
-    "userId",
-    userId // ✅ same as Postman
-  );
-
-  const response = await axios.post(`${backendUrl}/api/crop/predict-disease`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
-
-
-  return response.data;
-};
-
-
-
-const getMedicineFromChatbot = async (diseaseResult) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (!diseaseResult || diseaseResult.label === "Healthy") {
-        resolve("No medicine required. Crop is healthy 🌱");
-      } else {
-        resolve(
-          "Spray Mancozeb 75% WP twice at 7-day interval. Ensure proper irrigation."
-        );
-      }
-    }, 1200);
-  });
-};
-
-const fetchCropHistory = async () => {
+  const fetchCropHistory = async () => {
     setLoadingHistory(true);
     try {
-      const res = await axios.get(
-        `${backendUrl}/api/crop/all-crop/${userId}`
-      );
+      const res = await axios.get(`${backendUrl}/api/crop/all-crop/${userId}`);
 
       setCropHistory(res.data);
       setTotalCropPredict(res.data.length);
     } catch (err) {
-      console.error("❌ Failed to fetch crop history");
+      // console.error("❌ Failed to fetch crop history");
     } finally {
       setLoadingHistory(false);
     }
@@ -128,9 +107,7 @@ const fetchCropHistory = async () => {
   const fetchDiseaseHistory = async () => {
     setLoadingHistory(true);
     try {
-      const res = await axios.get(
-        `${backendUrl}/api/crop/disease/${userId}`
-      );
+      const res = await axios.get(`${backendUrl}/api/crop/disease/${userId}`);
 
       setDiseaseHistory(res.data);
       setTotalDiseasePredict(res.data.length);
@@ -144,7 +121,6 @@ const fetchCropHistory = async () => {
   useEffect(() => {
     setTotalPrediction(totalCropPredict + totalDiseasePredict);
   }, [totalCropPredict, totalDiseasePredict]);
-
 
   useEffect(() => {
     getProfile();
@@ -169,14 +145,10 @@ const fetchCropHistory = async () => {
     totalCropPredict,
     totalDiseasePredict,
     deleteCropPrediction,
-    deleteDiseasePrediction
+    deleteDiseasePrediction,
   };
 
-  return (
-    <AppContext.Provider value={value}>
-      {children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export default AppContextProvider;

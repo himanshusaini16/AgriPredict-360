@@ -14,7 +14,6 @@ const Navbar = () => {
   const { userData, setUserData } = useContext(AppContext);
   const navigate = useNavigate();
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -25,7 +24,6 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUserData(null);
@@ -36,11 +34,11 @@ const Navbar = () => {
 
   return (
     <nav className="bg-green-700 text-white shadow-md">
-      {/* ================= DESKTOP HEADER ================= */}
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 font-extrabold text-2xl">
+        <Link
+          to="/"
+          className="flex items-center gap-2 font-extrabold text-2xl"
+        >
           <img
             src="/logo.png"
             alt="AgriPredict 360 Logo"
@@ -49,17 +47,22 @@ const Navbar = () => {
           <span>AgriPredict 360</span>
         </Link>
 
-        {/* DESKTOP MENU */}
         <ul className="hidden md:flex items-center space-x-10 font-semibold">
           <li>
-            <Link to="/predict-crop" className="flex items-center gap-2 hover:text-yellow-400">
+            <Link
+              to="/predict-crop"
+              className="flex items-center gap-2 hover:text-yellow-400"
+            >
               <GiPlantRoots />
               Predict Crop
             </Link>
           </li>
 
           <li>
-            <Link to="/predict-disease" className="flex items-center gap-2 hover:text-yellow-400">
+            <Link
+              to="/predict-disease"
+              className="flex items-center gap-2 hover:text-yellow-400"
+            >
               <MdBugReport />
               Predict Disease
             </Link>
@@ -67,7 +70,10 @@ const Navbar = () => {
 
           {userData && (
             <li>
-              <Link to="/history" className="flex items-center gap-2 hover:text-yellow-400">
+              <Link
+                to="/history"
+                className="flex items-center gap-2 hover:text-yellow-400"
+              >
                 <FaHistory />
                 History
               </Link>
@@ -75,17 +81,17 @@ const Navbar = () => {
           )}
 
           <li>
-            <Link to="/store" className="flex items-center gap-2 hover:text-yellow-400">
+            <Link
+              to="/store"
+              className="flex items-center gap-2 hover:text-yellow-400"
+            >
               <FaStore />
               Store
             </Link>
           </li>
         </ul>
 
-        {/* RIGHT SIDE */}
         <div className="flex items-center gap-4" ref={menuRef}>
-
-          {/* Login button */}
           {!userData && (
             <Link
               to="/login"
@@ -95,7 +101,6 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/* USER DROPDOWN */}
           {userData && (
             <div className="relative hidden md:block">
               <button
@@ -118,7 +123,6 @@ const Navbar = () => {
 
               {userOpen && (
                 <div className="absolute right-0 mt-3 w-48 bg-white text-gray-800 rounded-xl shadow-xl z-50 overflow-hidden">
-
                   <Link
                     to="/profile"
                     className="flex items-center gap-3 px-4 py-3 hover:bg-green-100"
@@ -142,13 +146,11 @@ const Navbar = () => {
                     <FaSignOutAlt />
                     Logout
                   </button>
-
                 </div>
               )}
             </div>
           )}
 
-          {/* MOBILE BUTTON */}
           <button
             className="md:hidden text-3xl"
             onClick={() => setMobileOpen((prev) => !prev)}
@@ -158,10 +160,8 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ================= MOBILE MENU ================= */}
       {mobileOpen && (
         <div className="md:hidden bg-green-800 text-white px-6 py-5 space-y-4">
-
           {userData && (
             <div className="flex items-center gap-3 pb-4 border-b border-green-600">
               <div className="w-10 h-10 bg-yellow-400 text-green-900 rounded-full flex items-center justify-center font-bold">
@@ -181,19 +181,21 @@ const Navbar = () => {
           <ul className="flex flex-col space-y-4 font-semibold">
             <li>
               <Link to="/predict-crop" onClick={() => setMobileOpen(false)}>
-                🌱 Predict Crop
+                <GiPlantRoots /> Predict Crop
               </Link>
             </li>
 
             <li>
               <Link to="/predict-disease" onClick={() => setMobileOpen(false)}>
-                🦠 Predict Disease
+                <MdBugReport />
+                Predict Disease
               </Link>
             </li>
 
             <li>
               <Link to="/store" onClick={() => setMobileOpen(false)}>
-                🛒 Store
+                <FaStore />
+                Store
               </Link>
             </li>
 
@@ -201,7 +203,7 @@ const Navbar = () => {
               <>
                 <li>
                   <Link to="/history" onClick={() => setMobileOpen(false)}>
-                    📜 History
+                    <FaHistory /> History
                   </Link>
                 </li>
 
@@ -213,7 +215,7 @@ const Navbar = () => {
 
                 <li className="pt-3 border-t border-green-600">
                   <button onClick={handleLogout} className="text-red-300">
-                    🚪 Logout
+                    <FaSignOutAlt /> Logout
                   </button>
                 </li>
               </>

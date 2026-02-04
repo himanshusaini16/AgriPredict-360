@@ -37,27 +37,28 @@ const Login = () => {
           return;
         }
 
-        const res = await axios.post(
-          backendUrl + "/api/auth/register",
-          { name, email, password }
-        );
+        const res = await axios.post(backendUrl + "/api/auth/register", {
+          name,
+          email,
+          password,
+        });
 
         localStorage.setItem(
           "token",
-          JSON.stringify({ token: res.data.token, id: res.data.id })
+          JSON.stringify({ token: res.data.token, id: res.data.id }),
         );
 
         getProfile();
         navigate("/");
       } else {
-        const res = await axios.post(
-          backendUrl + "/api/auth/login",
-          { email, password }
-        );
+        const res = await axios.post(backendUrl + "/api/auth/login", {
+          email,
+          password,
+        });
 
         localStorage.setItem(
           "token",
-          JSON.stringify({ token: res.data.token, id: res.data.id })
+          JSON.stringify({ token: res.data.token, id: res.data.id }),
         );
 
         getProfile();
@@ -66,9 +67,7 @@ const Login = () => {
     } catch (err) {
       if (err.response) {
         const msg =
-          err.response.data?.message ||
-          err.response.data ||
-          "User not found";
+          err.response.data?.message || err.response.data || "User not found";
         setError(msg);
       } else {
         setError("Server not reachable");
@@ -79,8 +78,6 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-full py-16 bg-green-50">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-
-        {/* Header */}
         <h2 className="text-3xl font-extrabold text-green-800 text-center mb-2 flex items-center justify-center gap-2">
           <GiWheat className="text-yellow-600" />
           {isRegister ? "Create Account" : "Welcome Back"}
@@ -92,7 +89,6 @@ const Login = () => {
             : "Login to continue to CropAdvisor"}
         </p>
 
-        {/* Error */}
         {error && (
           <p className="text-red-600 text-sm text-center mb-4 flex items-center justify-center gap-2">
             <FaExclamationCircle />
@@ -100,10 +96,7 @@ const Login = () => {
           </p>
         )}
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-
-          {/* Name */}
           {isRegister && (
             <div>
               <label className="block text-sm font-medium mb-1 flex items-center gap-2">
@@ -120,7 +113,6 @@ const Login = () => {
             </div>
           )}
 
-          {/* Email */}
           <div>
             <label className="block text-sm font-medium mb-1 flex items-center gap-2">
               <FaEnvelope />
@@ -136,7 +128,6 @@ const Login = () => {
             />
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-sm font-medium mb-1 flex items-center gap-2">
               <FaLock />
@@ -152,7 +143,6 @@ const Login = () => {
             />
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             className="w-full bg-green-700 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition flex items-center justify-center gap-2"
@@ -162,18 +152,15 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center my-6">
           <div className="flex-grow h-px bg-gray-300" />
           <span className="px-3 text-sm text-gray-500">OR</span>
           <div className="flex-grow h-px bg-gray-300" />
         </div>
 
-        {/* Google Login */}
         <button
           onClick={() => {
-            window.location.href =
-              `${backendUrl}/oauth2/authorization/google`;
+            window.location.href = `${backendUrl}/oauth2/authorization/google`;
           }}
           className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
         >
@@ -187,7 +174,6 @@ const Login = () => {
           </span>
         </button>
 
-        {/* Toggle */}
         <p className="text-center text-sm text-gray-600 mt-6 flex items-center justify-center gap-2">
           {isRegister ? "Already have an account?" : "Don’t have an account?"}
           <button

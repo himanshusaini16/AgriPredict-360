@@ -67,19 +67,14 @@ const CropDisease = () => {
   return (
     <div className="bg-green-50 min-h-screen py-16 px-4">
       <div className="max-w-6xl mx-auto">
-
-        {/* Header */}
         <h1 className="text-4xl font-extrabold text-green-800 mb-12 text-center flex items-center justify-center gap-3">
           <MdBugReport className="text-red-600" />
           Crop Disease Prediction
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-
-          {/* LEFT: Upload */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
             <div className="border-2 border-dashed border-green-300 rounded-xl p-8 text-center">
-
               {!preview ? (
                 <>
                   <FaUpload className="text-4xl text-green-600 mx-auto mb-4" />
@@ -133,14 +128,10 @@ const CropDisease = () => {
               </button>
             </div>
 
-            {error && (
-              <p className="text-red-600 text-center mt-6">{error}</p>
-            )}
+            {error && <p className="text-red-600 text-center mt-6">{error}</p>}
           </div>
 
-          {/* RIGHT: Result */}
           <div className="bg-white rounded-2xl shadow-lg p-8 flex items-center justify-center">
-
             {!disease && !loading && (
               <p className="text-gray-500 text-center">
                 Upload an image and click predict to view results 🌱
@@ -149,12 +140,8 @@ const CropDisease = () => {
 
             {disease && (
               <div className="text-center space-y-8 w-full">
-
-                {/* Disease Status */}
                 <div>
-                  <p className="text-sm text-gray-500 mb-2">
-                    Disease Status
-                  </p>
+                  <p className="text-sm text-gray-500 mb-2">Disease Status</p>
 
                   <div
                     className={`inline-flex items-center gap-3 px-6 py-3 rounded-full text-2xl font-extrabold
@@ -175,18 +162,14 @@ const CropDisease = () => {
 
                   <p className="text-sm text-gray-600 mt-3">
                     Confidence:{" "}
-                    <span className="font-semibold">
-                      {disease.confidence}%
-                    </span>
+                    <span className="font-semibold">{disease.confidence}%</span>
                   </p>
                 </div>
 
                 {/* Medicine */}
                 {medicine && (
                   <div>
-                    <p className="text-sm text-gray-500 mb-2">
-                      Recommendation
-                    </p>
+                    <p className="text-sm text-gray-500 mb-2">Recommendation</p>
 
                     <div className="inline-flex items-start gap-3 bg-green-50 px-6 py-4 rounded-xl text-gray-700 font-semibold">
                       <FaCapsules className="mt-1 text-green-700" />
@@ -194,7 +177,6 @@ const CropDisease = () => {
                     </div>
                   </div>
                 )}
-
               </div>
             )}
           </div>

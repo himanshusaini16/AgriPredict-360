@@ -11,10 +11,7 @@ const OAuthSuccess = () => {
     const id = params.get("id");
 
     if (token && id) {
-      localStorage.setItem(
-        "token",
-        JSON.stringify({ token, id })
-      );
+      localStorage.setItem("token", JSON.stringify({ token, id }));
     }
 
     navigate("/");
@@ -22,8 +19,6 @@ const OAuthSuccess = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-green-50">
-
-      {/* Logo */}
       <div className="flex flex-col items-center mb-6">
         <img
           src="/logo.png"
@@ -35,7 +30,6 @@ const OAuthSuccess = () => {
         </h1>
       </div>
 
-      {/* Message */}
       <p className="text-lg font-semibold text-green-700">
         Logging you in with Google…
       </p>

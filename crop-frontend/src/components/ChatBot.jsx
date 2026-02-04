@@ -7,7 +7,6 @@ const ChatBot = () => {
 
   return (
     <>
-      {/* Floating Button */}
       <button
         onClick={() => setOpen(!open)}
         className="fixed bottom-6 right-6 z-50 bg-green-700 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-green-800 transition"
@@ -15,11 +14,8 @@ const ChatBot = () => {
         <FaRobot />
       </button>
 
-      {/* Chat Window */}
       {open && (
         <div className="fixed bottom-24 right-6 z-50 w-80 bg-white rounded-2xl shadow-xl border overflow-hidden">
-
-          {/* Header */}
           <div className="bg-green-700 text-white px-4 py-3 flex justify-between items-center">
             <div className="flex items-center gap-2">
               <FaRobot />
@@ -30,7 +26,6 @@ const ChatBot = () => {
             </button>
           </div>
 
-          {/* Messages */}
           <div className="h-64 p-4 overflow-y-auto bg-green-50 text-sm space-y-3">
             <div className="bg-white p-3 rounded-lg shadow-sm">
               👋 Hi! I’m your Agri Assistant.
@@ -46,8 +41,6 @@ const ChatBot = () => {
               🌾 Based on soil & weather, I can recommend the best crop.
             </div>
           </div>
-
-          {/* Input */}
           <div className="border-t p-3 flex gap-2">
             <input
               type="text"
@@ -56,9 +49,7 @@ const ChatBot = () => {
               placeholder="Type your message..."
               className="flex-1 px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-green-500"
             />
-            <button
-              className="bg-green-700 text-white px-4 rounded-lg hover:bg-green-800 transition flex items-center justify-center"
-            >
+            <button className="bg-green-700 text-white px-4 rounded-lg hover:bg-green-800 transition flex items-center justify-center">
               <FaPaperPlane />
             </button>
           </div>

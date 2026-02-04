@@ -32,9 +32,8 @@ const CropPrediction = () => {
 
   const [error, setError] = useState("");
 
-  const { userId,backendUrl } = useContext(AppContext);
+  const { userId, backendUrl } = useContext(AppContext);
 
-  /* 🌱 Soil Test with 5s loading */
   const generateSoilTest = () => {
     if (soilLoading) return;
 
@@ -53,7 +52,6 @@ const CropPrediction = () => {
     }, 5000);
   };
 
-  /* 🌦 Weather Test with 5s loading */
   const generateWeather = () => {
     if (weatherLoading) return;
 
@@ -75,7 +73,6 @@ const CropPrediction = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  /* 🔮 ML Model */
   const predictFromModel = async () => {
     const payload = {
       userId,
@@ -88,15 +85,11 @@ const CropPrediction = () => {
       rainfall: Number(form.rainfall),
     };
 
-    const res = await axios.post(
-      `${backendUrl}/api/crop/predict`,
-      payload
-    );
+    const res = await axios.post(`${backendUrl}/api/crop/predict`, payload);
 
     return res.data;
   };
 
-  /* 💬 Chatbot (Dummy) */
   const predictFromChatbot = () => {
     setChatbotLoading(true);
 
@@ -138,20 +131,14 @@ const CropPrediction = () => {
   return (
     <div className="min-h-screen bg-green-50 py-16 px-4">
       <div className="max-w-7xl mx-auto">
-
-        {/* Header */}
         <h1 className="text-4xl font-extrabold text-green-800 text-center mb-12 flex items-center justify-center gap-3">
           <FaSeedling />
           Crop Recommendation System
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-
-          {/* LEFT */}
           <div className="bg-white rounded-2xl shadow-lg p-8">
-
             <div className="flex gap-4 mb-8">
-              {/* Soil Test */}
               <button
                 onClick={generateSoilTest}
                 disabled={soilLoading}
@@ -240,14 +227,10 @@ const CropPrediction = () => {
               {loading ? "Predicting..." : "Predict Best Crop"}
             </button>
 
-            {error && (
-              <p className="text-red-600 text-center mt-4">{error}</p>
-            )}
+            {error && <p className="text-red-600 text-center mt-4">{error}</p>}
           </div>
 
-          {/* RIGHT */}
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-
             <h2 className="text-xl font-bold text-green-800 mb-6">
               Prediction Results
             </h2>
@@ -292,7 +275,6 @@ const CropPrediction = () => {
               </div>
             )}
           </div>
-
         </div>
       </div>
     </div>

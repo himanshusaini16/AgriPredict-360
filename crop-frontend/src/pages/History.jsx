@@ -31,7 +31,6 @@ const History = () => {
 
   return (
     <div className="min-h-screen bg-green-50 flex flex-col md:flex-row">
-      {/* ================= SIDEBAR (DESKTOP) ================= */}
       <aside className="hidden md:block w-64 bg-white border-r p-6">
         <h2 className="text-xl font-bold text-green-800 mb-6 flex items-center gap-2">
           <FaHistory /> History
@@ -60,9 +59,7 @@ const History = () => {
         </button>
       </aside>
 
-      {/* ================= CONTENT ================= */}
       <main className="flex-1 p-4 md:p-10">
-        {/* ===== MOBILE DROPDOWN ===== */}
         <div className="md:hidden mb-6">
           <h2 className="text-lg font-bold text-green-800 flex items-center gap-2 mb-3">
             <FaHistory /> History
@@ -78,7 +75,6 @@ const History = () => {
           </select>
         </div>
 
-        {/* ================= CROP HISTORY ================= */}
         {active === "crop" && (
           <>
             <h1 className="text-xl md:text-2xl font-bold text-green-800 mb-4 flex items-center gap-2">
@@ -109,12 +105,24 @@ const History = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-1 text-sm">
-                      <p><strong>N:</strong> {item.n}</p>
-                      <p><strong>P:</strong> {item.p}</p>
-                      <p><strong>K:</strong> {item.k}</p>
-                      <p><strong>pH:</strong> {Number(item.ph).toFixed(1)}</p>
-                      <p><strong>Humidity:</strong> {item.humidity}%</p>
-                      <p><strong>Rainfall:</strong> {item.rainfall}mm</p>
+                      <p>
+                        <strong>N:</strong> {item.n}
+                      </p>
+                      <p>
+                        <strong>P:</strong> {item.p}
+                      </p>
+                      <p>
+                        <strong>K:</strong> {item.k}
+                      </p>
+                      <p>
+                        <strong>pH:</strong> {Number(item.ph).toFixed(1)}
+                      </p>
+                      <p>
+                        <strong>Humidity:</strong> {item.humidity}%
+                      </p>
+                      <p>
+                        <strong>Rainfall:</strong> {item.rainfall}mm
+                      </p>
                     </div>
 
                     <div className="mt-3 flex justify-between items-center">
@@ -143,7 +151,6 @@ const History = () => {
           </>
         )}
 
-        {/* ================= DISEASE HISTORY ================= */}
         {active === "disease" && (
           <>
             <h1 className="text-xl md:text-2xl font-bold text-green-800 mb-4 flex items-center gap-2">
@@ -152,8 +159,9 @@ const History = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {diseaseHistory.map((item) => {
-                const isHealthy =
-                  item.disease.toLowerCase().includes("healthy");
+                const isHealthy = item.disease
+                  .toLowerCase()
+                  .includes("healthy");
 
                 return (
                   <div
@@ -188,9 +196,7 @@ const History = () => {
 
                     <button
                       onClick={() => {
-                        if (
-                          window.confirm("Delete this disease prediction?")
-                        ) {
+                        if (window.confirm("Delete this disease prediction?")) {
                           deleteDiseasePrediction(item.id);
                         }
                       }}

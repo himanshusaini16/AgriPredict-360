@@ -55,8 +55,6 @@ const Store = () => {
 
   return (
     <div className="min-h-[80vh] bg-gray-50 flex">
-
-      {/* Sidebar */}
       <aside className="w-64 bg-white border-r p-6">
         <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <FaStore />
@@ -109,9 +107,7 @@ const Store = () => {
                 {item.name}
               </h3>
 
-              <p className="text-sm text-gray-600 mb-4">
-                {item.description}
-              </p>
+              <p className="text-sm text-gray-600 mb-4">{item.description}</p>
 
               <div className="flex justify-between items-center">
                 <span className="font-semibold text-green-700 flex items-center gap-1">
